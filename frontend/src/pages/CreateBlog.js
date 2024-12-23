@@ -17,7 +17,7 @@ const CreateBlog = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/blogs", {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/api/blogs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -10,7 +10,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', { username, password });
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/users/login`, { username, password });
       localStorage.setItem('token', response.data.token);
       alert('Login successful!');
       navigate('/');

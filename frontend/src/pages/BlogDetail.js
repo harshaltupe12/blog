@@ -9,7 +9,7 @@ const BlogDetail = () => {
 
   useEffect(() => {
     const fetchBlog = async () => {
-      const response = await axios.get(`http://localhost:5000/api/blogs/${id}`);
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASEURL}/api/blogs/${id}`);
       setBlog(response.data);
     };
     fetchBlog();
@@ -20,7 +20,7 @@ const BlogDetail = () => {
     const token = localStorage.getItem('token');
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/blogs/${id}/comments`,
+        `${process.env.REACT_APP_BACKEND_BASEURL}/api/blogs/${id}/comments`,
         { content: comment },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -7,7 +7,7 @@ const BlogList = () => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const response = await axios.get('http://localhost:5000/api/blogs');
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASEURL}/api/blogs`);
       setBlogs(response.data);
     };
     fetchBlogs();

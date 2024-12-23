@@ -10,7 +10,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/users/register', { username, password });
+      await axios.post(`${process.env.REACT_APP_BACKEND_BASEURL}/api/users/register`, { username, password });
       alert('Registration successful! Please log in.');
       navigate('/login');
     } catch (err) {
