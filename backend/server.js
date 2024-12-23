@@ -19,6 +19,6 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use('/api/users', userRoutes);
 app.use('/api/blogs', blogRoutes);
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+app.listen(process.env.PORT||5000, () => console.log('Server running on port 5000'));
 
 module.exports = app;
