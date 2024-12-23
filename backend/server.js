@@ -20,3 +20,5 @@ app.use('/api/users', userRoutes);
 app.use('/api/blogs', blogRoutes);
 
 app.listen(5000, () => console.log('Server running on port 5000'));
+
+module.exports = app;
