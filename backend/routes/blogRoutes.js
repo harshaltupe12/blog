@@ -39,6 +39,21 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Route to get a specific blog post by ID (Public)
+router.get('/:id', async (req, res) => {
+  try {
+    const blogPost = await BlogPost.findById(req.params.id).populate('author', 'username');
+
+    if (!blogPost) {
+      return res.status(404).json({ error: 'Blog post not found.' });
+    }
+
+    res.status(200).json(blogPost);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Route to add a comment to a blog post (Protected)
 router.post('/:id/comments', authMiddleware, async (req, res) => {
   try {
