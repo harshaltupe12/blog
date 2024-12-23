@@ -1,47 +1,72 @@
-// frontend/src/pages/CreateBlog.js
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateBlog = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("You must be logged in to create a blog.");
+      navigate("/login");
+      return;
+    }
+
     try {
-      await axios.post(
-        'http://localhost:5000/api/blogs',
-        { title, content },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      alert('Blog created successfully!');
-      navigate('/');
-    } catch (err) {
-      alert('Failed to create blog. Ensure you are logged in.');
+      const response = await fetch("http://localhost:5000/api/blogs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token, // Include the token in the request
+        },
+        body: JSON.stringify({ title, content }),
+      });
+
+      if (response.ok) {
+        alert("Blog created successfully!");
+        navigate("/");
+      } else {
+        const data = await response.json();
+        alert(data.message || "Failed to create blog.");
+      }
+    } catch (error) {
+      alert("Error: " + error.message);
     }
   };
 
   return (
-    <div>
-      <h2>Create Blog</h2>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-4">Create a New Blog</h1>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="Content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          required
-        />
-        <button type="submit">Create</button>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Title</label>
+          <input
+            type="text"
+            className="w-full px-4 py-2 border rounded-md"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Content</label>
+          <textarea
+            className="w-full px-4 py-2 border rounded-md"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+        >
+          Create Blog
+        </button>
       </form>
     </div>
   );
