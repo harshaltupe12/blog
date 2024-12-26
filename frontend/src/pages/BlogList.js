@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,6 +15,19 @@ const BlogList = () => {
     fetchBlogs();
   }, []);
 
+  const isLoggedIn = localStorage.getItem('token') !== null;
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,17 +35,34 @@ const BlogList = () => {
           <h1 className="text-4xl font-bold text-blue-600">Latest Blogs</h1>
           <p className="mt-2 text-lg text-gray-600">Explore the latest blog posts from our community.</p>
         </div>
-        
+
         {/* Create New Blog Button */}
-        <div className="mb-6 flex justify-end">
+        <div className="mb-6 flex justify-end gap-3">
           <Link
             to="/create"
             className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300"
           >
             Create New Blog
           </Link>
+          <div className="">
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white py-2 px-4 rounded-lg"
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+              >
+                Login
+              </button>
+            )}
+          </div>
         </div>
-        
+
         {/* Blog List */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogs.map((blog) => (
