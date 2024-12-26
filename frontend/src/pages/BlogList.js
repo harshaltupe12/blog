@@ -8,6 +8,7 @@ const BlogList = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_BASEURL}/api/blogs`);
+      // const response = await axios.get('https://blog-125.onrender.com/api/blogs');
       setBlogs(response.data);
     };
     fetchBlogs();
